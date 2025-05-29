@@ -10,6 +10,8 @@ import {
   Menu,
   MenuItem,
   Divider,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -23,6 +25,8 @@ const TopNavbar = () => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,28 +46,46 @@ const TopNavbar = () => {
     <AppBar
       position="fixed"
       sx={{
-        ml: "240px",
-        width: "calc(100% - 240px)",
+        ml: { xs: 0, md: "240px" },
+        width: { xs: "100%", md: "calc(100% - 240px)" },
         bgcolor: "background.default",
         boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
+        zIndex: (theme) => theme.zIndex.drawer - 1,
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          pl: { xs: 7, md: 2 },
+          minHeight: { xs: 56, sm: 64 },
+        }}
+      >
         <Typography
           variant="h6"
           component="div"
           color="text.primary"
-          sx={{ fontSize: "1.1rem" }}
+          sx={{
+            fontSize: "1.1rem",
+            display: { xs: "none", sm: "block" },
+          }}
         >
           Welcome {user?.username},
         </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: { xs: 1, md: 3 },
+            ml: { xs: "auto", sm: 0 },
+          }}
+        >
           <TextField
             size="small"
             placeholder="Search..."
             sx={{
-              width: 200,
+              display: { xs: "none", sm: "block" },
+              width: { sm: 150, md: 200 },
               "& .MuiOutlinedInput-root": {
                 bgcolor: "background.paper",
                 borderRadius: 2,
@@ -86,8 +108,8 @@ const TopNavbar = () => {
             <Avatar
               sx={{
                 bgcolor: "primary.main",
-                width: 35,
-                height: 35,
+                width: { xs: 32, md: 35 },
+                height: { xs: 32, md: 35 },
                 fontSize: "0.9rem",
               }}
             >

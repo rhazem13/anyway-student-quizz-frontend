@@ -1,91 +1,146 @@
 import {
-  Box,
   Drawer,
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
+  Box,
+  useTheme,
+  useMediaQuery,
+  IconButton,
   Typography,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
-  Event as EventIcon,
-  School as SchoolIcon,
-  MenuBook as MenuBookIcon,
-  Assessment as AssessmentIcon,
+  Quiz as QuizIcon,
   Announcement as AnnouncementIcon,
+  Menu as MenuIcon,
 } from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router-dom";
-
-const DRAWER_WIDTH = 240;
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const menuItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { text: "Schedule", icon: <EventIcon />, path: "/schedule" },
-  { text: "Courses", icon: <MenuBookIcon />, path: "/courses" },
-  { text: "Gradebook", icon: <SchoolIcon />, path: "/gradebook" },
-  { text: "Performance", icon: <AssessmentIcon />, path: "/performance" },
-  { text: "Announcement", icon: <AnnouncementIcon />, path: "/announcements" },
+  { text: "Quizzes", icon: <QuizIcon />, path: "/quizzes" },
+  { text: "Announcements", icon: <AnnouncementIcon />, path: "/announcements" },
 ];
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <Drawer
-      variant="permanent"
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawerContent = (
+    <Box
       sx={{
-        width: DRAWER_WIDTH,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: DRAWER_WIDTH,
-          boxSizing: "border-box",
-          bgcolor: "primary.main",
-          color: "white",
-        },
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Box sx={{ p: 2, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
-        <Typography variant="h6" sx={{ color: "white", fontWeight: 600 }}>
-          Coligo
+      <Box sx={{ p: 2, borderBottom: "1px solid rgba(0,0,0,0.12)" }}>
+        <Typography variant="h6" color="primary" sx={{ fontWeight: 600 }}>
+          Student Quiz
         </Typography>
       </Box>
-      <List sx={{ mt: 2 }}>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              onClick={() => navigate(item.path)}
-              selected={location.pathname === item.path}
+
+      <Box sx={{ overflow: "auto", flexGrow: 1 }}>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              button
+              key={item.text}
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) {
+                  handleDrawerToggle();
+                }
+              }}
               sx={{
-                "&.Mui-selected": {
-                  bgcolor: "rgba(255,255,255,0.08)",
-                  "&:hover": {
-                    bgcolor: "rgba(255,255,255,0.12)",
-                  },
-                },
+                backgroundColor:
+                  location.pathname === item.path
+                    ? "rgba(0, 0, 0, 0.04)"
+                    : "transparent",
                 "&:hover": {
-                  bgcolor: "rgba(255,255,255,0.04)",
+                  backgroundColor: "rgba(0, 0, 0, 0.08)",
                 },
               }}
             >
-              <ListItemIcon sx={{ color: "white", minWidth: 40 }}>
+              <ListItemIcon
+                sx={{
+                  color:
+                    location.pathname === item.path
+                      ? "primary.main"
+                      : "text.secondary",
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
               <ListItemText
                 primary={item.text}
                 sx={{
-                  "& .MuiListItemText-primary": {
-                    fontSize: "0.9rem",
-                  },
+                  color:
+                    location.pathname === item.path
+                      ? "primary.main"
+                      : "text.primary",
                 }}
               />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Drawer>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Box>
+  );
+
+  return (
+    <>
+      {isMobile && (
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{
+            position: "fixed",
+            left: 16,
+            top: 16,
+            zIndex: theme.zIndex.drawer + 2,
+            bgcolor: "background.paper",
+            boxShadow: 1,
+            "&:hover": {
+              bgcolor: "background.paper",
+            },
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile ? mobileOpen : true}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better mobile performance
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 240,
+            boxSizing: "border-box",
+            border: "none",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            height: "100%",
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+    </>
   );
 };
 

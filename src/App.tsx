@@ -5,6 +5,7 @@ import {
   ThemeProvider,
   createTheme,
   Toolbar,
+  useMediaQuery,
 } from "@mui/material";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -53,9 +54,16 @@ const theme = createTheme({
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        overflow: "hidden", // Prevent body scrolling when drawer is open on mobile
+      }}
+    >
       {isAuthenticated && (
         <>
           <Sidebar />
@@ -67,11 +75,15 @@ function AppContent() {
         sx={{
           flexGrow: 1,
           bgcolor: "background.default",
-          p: 3,
+          p: { xs: 2, md: 3 },
           ...(isAuthenticated && {
-            ml: "240px",
+            ml: { xs: 0, md: "240px" },
             mt: "64px",
           }),
+          width: "100%",
+          height: "100vh",
+          overflow: "auto", // Enable scrolling for main content
+          position: "relative", // For proper positioning of floating elements
         }}
       >
         {isAuthenticated && <Toolbar />}

@@ -102,8 +102,8 @@ const Dashboard = () => {
   ];
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 4 }}>
-      <Box sx={{ mb: 4 }}>
+    <Container maxWidth="xl" sx={{ mt: 2 }}>
+      <Box sx={{ mb: 3 }}>
         <Card
           sx={{
             backgroundImage: "linear-gradient(to right, #ffffff, #f5f5f5)",
@@ -112,7 +112,7 @@ const Dashboard = () => {
             overflow: "hidden",
           }}
         >
-          <CardContent sx={{ p: 4 }}>
+          <CardContent sx={{ p: { xs: 2, md: 4 } }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={8}>
                 <Typography variant="h4" gutterBottom>
@@ -141,7 +141,7 @@ const Dashboard = () => {
         </Card>
       </Box>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 2, borderRadius: 2 }}>
             <Box
