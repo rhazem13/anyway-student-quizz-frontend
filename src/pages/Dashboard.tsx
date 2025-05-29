@@ -150,7 +150,12 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
             >
               <Typography variant="h6">Announcements</Typography>
-              <Button color="primary">All</Button>
+              <Button
+                color="primary"
+                onClick={() => navigate("/announcements")}
+              >
+                All
+              </Button>
             </Box>
             {loading.announcements ? (
               <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
