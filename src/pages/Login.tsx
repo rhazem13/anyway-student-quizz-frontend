@@ -155,6 +155,7 @@ const Login = () => {
               value={formData.login}
               onChange={handleChange}
               margin="normal"
+              required
               autoComplete="username"
               sx={{ mb: 2 }}
             />
@@ -166,6 +167,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               margin="normal"
+              required
               autoComplete="current-password"
               InputProps={{
                 endAdornment: (
@@ -189,7 +191,9 @@ const Login = () => {
                 variant="contained"
                 fullWidth
                 size="large"
-                disabled={loading}
+                disabled={
+                  loading || !formData.login.trim() || !formData.password.trim()
+                }
                 sx={{
                   py: 1.5,
                   fontSize: "1.1rem",
@@ -209,7 +213,7 @@ const Login = () => {
                   fontSize: "1.1rem",
                 }}
               >
-                Demo Login
+                Demo Login (Empty Credentials)
               </Button>
 
               <Button
