@@ -17,12 +17,22 @@ import {
 import requireAuth from "../components/requireAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import type { Announcement } from "../types";
+import type { Announcement, Quiz } from "../types";
 
 const Dashboard = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [loading, setLoading] = useState({
+    announcements: true,
+    quizzes: true,
+  });
+  const [error, setError] = useState<{
+    announcements: string | null;
+    quizzes: string | null;
+  }>({
+    announcements: null,
+    quizzes: null,
+  });
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -31,17 +41,46 @@ const Dashboard = () => {
           "http://localhost:5000/api/announcements"
         );
         setAnnouncements(response.data);
-        setError(null);
+        setError((prev) => ({ ...prev, announcements: null }));
       } catch (err) {
-        setError("Failed to fetch announcements");
+        setError((prev) => ({
+          ...prev,
+          announcements: "Failed to fetch announcements",
+        }));
         console.error("Error fetching announcements:", err);
       } finally {
-        setLoading(false);
+        setLoading((prev) => ({ ...prev, announcements: false }));
+      }
+    };
+
+    const fetchQuizzes = async () => {
+      try {
+        const response = await axios.get<Quiz[]>(
+          "http://localhost:5000/api/quizzes"
+        );
+        setQuizzes(response.data);
+        setError((prev) => ({ ...prev, quizzes: null }));
+      } catch (err) {
+        setError((prev) => ({ ...prev, quizzes: "Failed to fetch quizzes" }));
+        console.error("Error fetching quizzes:", err);
+      } finally {
+        setLoading((prev) => ({ ...prev, quizzes: false }));
       }
     };
 
     fetchAnnouncements();
+    fetchQuizzes();
   }, []);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   const dueItems = [
     {
@@ -111,13 +150,13 @@ const Dashboard = () => {
               <Typography variant="h6">Announcements</Typography>
               <Button color="primary">All</Button>
             </Box>
-            {loading ? (
+            {loading.announcements ? (
               <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
                 <CircularProgress />
               </Box>
-            ) : error ? (
+            ) : error.announcements ? (
               <Typography color="error" sx={{ p: 2 }}>
-                {error}
+                {error.announcements}
               </Typography>
             ) : (
               <List>
@@ -169,15 +208,7 @@ const Dashboard = () => {
                             color="text.secondary"
                             sx={{ mt: 1, display: "block" }}
                           >
-                            {new Date(
-                              announcement.createdAt
-                            ).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
+                            {formatDate(announcement.createdAt)}
                           </Typography>
                         </>
                       }
@@ -197,40 +228,50 @@ const Dashboard = () => {
               <Typography variant="h6">What's due</Typography>
               <Button color="primary">All</Button>
             </Box>
-            <List>
-              {dueItems.map((item) => (
-                <ListItem
-                  key={item.id}
-                  sx={{
-                    flexDirection: "column",
-                    alignItems: "stretch",
-                    gap: 1,
-                    mb: 2,
-                  }}
-                >
-                  <Typography variant="subtitle1" color="primary">
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Course: {item.course}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Topic: {item.topic}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Due to: {item.dueDate}
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    sx={{ mt: 1 }}
+            {loading.quizzes ? (
+              <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+                <CircularProgress />
+              </Box>
+            ) : error.quizzes ? (
+              <Typography color="error" sx={{ p: 2 }}>
+                {error.quizzes}
+              </Typography>
+            ) : (
+              <List>
+                {quizzes.map((quiz) => (
+                  <ListItem
+                    key={quiz._id}
+                    sx={{
+                      flexDirection: "column",
+                      alignItems: "stretch",
+                      gap: 1,
+                      mb: 2,
+                    }}
                   >
-                    {item.type === "quiz" ? "Start Quiz" : "Solve Assignment"}
-                  </Button>
-                </ListItem>
-              ))}
-            </List>
+                    <Typography variant="subtitle1" color="primary">
+                      {quiz.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Course: {quiz.course}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Topic: {quiz.topic}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Due to: {formatDate(quiz.dueDate)}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      sx={{ mt: 1 }}
+                    >
+                      Start Quiz
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Paper>
         </Grid>
       </Grid>
