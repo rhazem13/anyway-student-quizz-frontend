@@ -1,8 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import {
+  Box,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  Toolbar,
+} from "@mui/material";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Sidebar from "./components/Sidebar";
+import TopNavbar from "./components/TopNavbar";
 
 const theme = createTheme({
   palette: {
@@ -42,21 +49,32 @@ const theme = createTheme({
 });
 
 function App() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Box sx={{ display: "flex", minHeight: "100vh" }}>
-          <Sidebar />
+          {isLoggedIn && (
+            <>
+              <Sidebar />
+              <TopNavbar />
+            </>
+          )}
           <Box
             component="main"
             sx={{
               flexGrow: 1,
               bgcolor: "background.default",
               p: 3,
-              ml: "240px",
+              ...(isLoggedIn && {
+                ml: "240px",
+                mt: "64px",
+              }),
             }}
           >
+            {isLoggedIn && <Toolbar />}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
