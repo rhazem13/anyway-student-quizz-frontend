@@ -48,7 +48,7 @@ const Sidebar = () => {
     >
       <Box sx={{ p: 2, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
         <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
-          Student Quiz
+          Coligo
         </Typography>
       </Box>
 
