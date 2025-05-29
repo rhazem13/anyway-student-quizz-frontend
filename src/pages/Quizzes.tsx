@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import type { Quiz } from "../types";
 import requireAuth from "../components/requireAuth";
+import { useNavigate } from "react-router-dom";
 
 const Quizzes = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -25,6 +26,7 @@ const Quizzes = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCourse, setFilterCourse] = useState("all");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -159,6 +161,7 @@ const Quizzes = () => {
                     color="secondary"
                     fullWidth
                     sx={{ mt: "auto" }}
+                    onClick={() => navigate(`/quiz/${quiz._id}`)}
                   >
                     Start Quiz
                   </Button>

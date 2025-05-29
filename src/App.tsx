@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Quizzes from "./pages/Quizzes";
 import Announcements from "./pages/Announcements";
+import QuizPage from "./pages/QuizPage";
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -94,6 +95,7 @@ function AppContent() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quizzes" element={<Quizzes />} />
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/quiz/:quizId" element={<QuizPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>

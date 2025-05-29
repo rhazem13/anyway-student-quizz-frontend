@@ -339,7 +339,7 @@ const Dashboard = () => {
                       color="secondary"
                       fullWidth
                       sx={{ mt: 1 }}
-                      onClick={() => navigate("/quizzes")}
+                      onClick={() => navigate(`/quiz/${quiz._id}`)}
                     >
                       Start Quiz
                     </Button>
