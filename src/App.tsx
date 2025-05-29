@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 const theme = createTheme({
   palette: {
@@ -49,41 +50,49 @@ const theme = createTheme({
   },
 });
 
-function App() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+function AppContent() {
+  const { isAuthenticated } = useAuth();
 
+  return (
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+      {isAuthenticated && (
+        <>
+          <Sidebar />
+          <TopNavbar />
+        </>
+      )}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          bgcolor: "background.default",
+          p: 3,
+          ...(isAuthenticated && {
+            ml: "240px",
+            mt: "64px",
+          }),
+        }}
+      >
+        {isAuthenticated && <Toolbar />}
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Box>
+    </Box>
+  );
+}
+
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Box sx={{ display: "flex", minHeight: "100vh" }}>
-          {isLoggedIn && (
-            <>
-              <Sidebar />
-              <TopNavbar />
-            </>
-          )}
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              bgcolor: "background.default",
-              p: 3,
-              ...(isLoggedIn && {
-                ml: "240px",
-                mt: "64px",
-              }),
-            }}
-          >
-            {isLoggedIn && <Toolbar />}
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-          </Box>
-        </Box>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

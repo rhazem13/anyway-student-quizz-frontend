@@ -17,9 +17,11 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // This would typically come from your auth context/state
   const username = "Talia";
@@ -33,8 +35,9 @@ const TopNavbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
+    logout();
     navigate("/");
+    handleClose();
   };
 
   return (

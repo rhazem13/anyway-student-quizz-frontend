@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 interface LoginForm {
   login: string;
@@ -28,6 +29,7 @@ interface LoginForm {
 const Login = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -65,9 +67,7 @@ const Login = () => {
       );
 
       if (response.data.token) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        login(response.data.token, response.data.user);
         navigate("/dashboard");
       }
     } catch (err: any) {
