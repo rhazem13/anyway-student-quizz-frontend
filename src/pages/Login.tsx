@@ -9,6 +9,7 @@ import {
   Alert,
   IconButton,
   InputAdornment,
+  Stack,
 } from "@mui/material";
 import {
   School as SchoolIcon,
@@ -42,6 +43,14 @@ const Login = () => {
       [name]: value,
     }));
     setError(null); // Clear error when user types
+  };
+
+  const handleDemoLogin = () => {
+    setFormData({
+      login: "",
+      password: "",
+    });
+    handleSubmit(new Event("submit") as any);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -146,7 +155,6 @@ const Login = () => {
               value={formData.login}
               onChange={handleChange}
               margin="normal"
-              required
               autoComplete="username"
               sx={{ mb: 2 }}
             />
@@ -158,7 +166,6 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               margin="normal"
-              required
               autoComplete="current-password"
               InputProps={{
                 endAdornment: (
@@ -176,28 +183,43 @@ const Login = () => {
               sx={{ mb: 3 }}
             />
 
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              size="large"
-              disabled={loading}
-              sx={{
-                py: 1.5,
-                fontSize: "1.1rem",
-                mb: 2,
-              }}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </Button>
+            <Stack spacing={2}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                size="large"
+                disabled={loading}
+                sx={{
+                  py: 1.5,
+                  fontSize: "1.1rem",
+                }}
+              >
+                {loading ? "Logging in..." : "Login"}
+              </Button>
 
-            <Button
-              variant="text"
-              onClick={() => navigate("/register")}
-              sx={{ textTransform: "none" }}
-            >
-              Don't have an account? Register
-            </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                size="large"
+                onClick={handleDemoLogin}
+                disabled={loading}
+                sx={{
+                  py: 1.5,
+                  fontSize: "1.1rem",
+                }}
+              >
+                Demo Login
+              </Button>
+
+              <Button
+                variant="text"
+                onClick={() => navigate("/register")}
+                sx={{ textTransform: "none" }}
+              >
+                Don't have an account? Register
+              </Button>
+            </Stack>
           </form>
         </Paper>
       </Container>
