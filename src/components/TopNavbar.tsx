@@ -7,12 +7,35 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Menu,
+  MenuItem,
+  Divider,
 } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import {
+  Search as SearchIcon,
+  Logout as LogoutIcon,
+} from "@mui/icons-material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TopNavbar = () => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // This would typically come from your auth context/state
   const username = "Talia";
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+  };
 
   return (
     <AppBar
@@ -53,7 +76,12 @@ const TopNavbar = () => {
               ),
             }}
           />
-          <IconButton sx={{ p: 0 }}>
+          <IconButton
+            onClick={handleMenu}
+            sx={{ p: 0 }}
+            aria-controls="profile-menu"
+            aria-haspopup="true"
+          >
             <Avatar
               sx={{
                 bgcolor: "primary.main",
@@ -65,6 +93,36 @@ const TopNavbar = () => {
               {username[0].toUpperCase()}
             </Avatar>
           </IconButton>
+          <Menu
+            id="profile-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                minWidth: 180,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <Box sx={{ px: 2, py: 1 }}>
+              <Typography variant="subtitle1" color="text.primary">
+                {username}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Student
+              </Typography>
+            </Box>
+            <Divider />
+            <MenuItem onClick={handleLogout} sx={{ gap: 1.5 }}>
+              <LogoutIcon fontSize="small" color="action" />
+              <Typography variant="body2">Logout</Typography>
+            </MenuItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>
