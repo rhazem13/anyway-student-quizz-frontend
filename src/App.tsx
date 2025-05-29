@@ -88,7 +88,6 @@ function AppContent() {
           position: "relative", // For proper positioning of floating elements
         }}
       >
-        {isAuthenticated && <Toolbar />}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />

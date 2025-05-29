@@ -68,7 +68,7 @@ const Quizzes = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 8 }}>
         <Typography variant="h4" gutterBottom>
           Quizzes
         </Typography>

@@ -108,7 +108,7 @@ const Dashboard = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 0 }}>
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ mb: 8 }}>
         <Card
           sx={{
             backgroundColor: "#ffffff",

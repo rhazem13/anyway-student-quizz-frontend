@@ -74,7 +74,7 @@ const Announcements = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 2, mb: 4 }}>
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 8 }}>
         <Typography variant="h4" gutterBottom>
           Announcements
         </Typography>
@@ -122,7 +122,7 @@ const Announcements = () => {
             {error}
           </Typography>
         ) : (
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List sx={{ width: "100%" }}>
             {filteredAnnouncements.map((announcement) => (
               <Paper
                 key={announcement._id}
