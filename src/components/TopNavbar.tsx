@@ -21,10 +21,8 @@ import { useAuth } from "../context/AuthContext";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  // This would typically come from your auth context/state
-  const username = "Talia";
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -57,7 +55,7 @@ const TopNavbar = () => {
           color="text.primary"
           sx={{ fontSize: "1.1rem" }}
         >
-          Welcome {username},
+          Welcome {user?.username},
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
@@ -93,7 +91,7 @@ const TopNavbar = () => {
                 fontSize: "0.9rem",
               }}
             >
-              {username[0].toUpperCase()}
+              {user?.username?.[0].toUpperCase()}
             </Avatar>
           </IconButton>
           <Menu
@@ -114,10 +112,10 @@ const TopNavbar = () => {
           >
             <Box sx={{ px: 2, py: 1 }}>
               <Typography variant="subtitle1" color="text.primary">
-                {username}
+                {user?.username}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Student
+                {user?.email}
               </Typography>
             </Box>
             <Divider />
