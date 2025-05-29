@@ -43,7 +43,7 @@ const TopNavbar = () => {
       sx={{
         ml: { xs: 0, md: "240px" },
         width: { xs: "100%", md: "calc(100% - 240px)" },
-        bgcolor: "background.default",
+        bgcolor: "#ffffff",
         boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
         zIndex: (theme) => theme.zIndex.drawer - 1,
       }}
@@ -58,10 +58,11 @@ const TopNavbar = () => {
         <Typography
           variant="h6"
           component="div"
-          color="text.primary"
+          color="text.secondary"
           sx={{
-            fontSize: "1.1rem",
+            fontSize: { xs: "1.2rem", md: "1.4rem" },
             display: { xs: "none", sm: "block" },
+            fontWeight: 600,
           }}
         >
           Welcome {user?.username},
