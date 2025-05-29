@@ -6,7 +6,7 @@ import {
   createTheme,
   Toolbar,
 } from "@mui/material";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Sidebar from "./components/Sidebar";
@@ -77,7 +77,7 @@ function App() {
           >
             {isLoggedIn && <Toolbar />}
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
