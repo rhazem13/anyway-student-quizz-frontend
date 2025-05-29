@@ -18,6 +18,7 @@ import requireAuth from "../components/requireAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import type { Announcement, Quiz } from "../types";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -33,6 +34,7 @@ const Dashboard = () => {
     announcements: null,
     quizzes: null,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -102,7 +104,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 2 }}>
+    <Container maxWidth="xl" sx={{ mt: 0 }}>
       <Box sx={{ mb: 3 }}>
         <Card
           sx={{
@@ -141,7 +143,7 @@ const Dashboard = () => {
         </Card>
       </Box>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={3} sx={{ mb: 10 }}>
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 2, borderRadius: 2 }}>
             <Box
@@ -226,7 +228,9 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
             >
               <Typography variant="h6">What's due</Typography>
-              <Button color="primary">All</Button>
+              <Button color="primary" onClick={() => navigate("/quizzes")}>
+                All
+              </Button>
             </Box>
             {loading.quizzes ? (
               <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
@@ -265,6 +269,7 @@ const Dashboard = () => {
                       color="secondary"
                       fullWidth
                       sx={{ mt: 1 }}
+                      onClick={() => navigate("/quizzes")}
                     >
                       Start Quiz
                     </Button>
