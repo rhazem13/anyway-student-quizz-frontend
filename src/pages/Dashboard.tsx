@@ -12,28 +12,36 @@ import {
   ListItemAvatar,
   ListItemText,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import requireAuth from "../components/requireAuth";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import type { Announcement } from "../types";
 
 const Dashboard = () => {
-  const announcements = [
-    {
-      id: 1,
-      author: "Mr.Ahmed Mostafa",
-      department: "Math 101",
-      avatar: "AM",
-      content:
-        "Hi my heroes! I just want you ready to our exams and focus on remaining assessments to gain more grades, good luck my warriors! 😊",
-    },
-    {
-      id: 2,
-      author: "Mrs.Salma Ahmed",
-      department: "Physics 02",
-      avatar: "SA",
-      content:
-        "Hello my students, I want to announce that the next quiz will be within 3 days and will cover the whole unit2. Also add additional handout. Study hard good luck!",
-    },
-  ];
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await axios.get<Announcement[]>(
+          "http://localhost:5000/api/announcements"
+        );
+        setAnnouncements(response.data);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch announcements");
+        console.error("Error fetching announcements:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
 
   const dueItems = [
     {
@@ -103,42 +111,81 @@ const Dashboard = () => {
               <Typography variant="h6">Announcements</Typography>
               <Button color="primary">All</Button>
             </Box>
-            <List>
-              {announcements.map((announcement) => (
-                <ListItem
-                  key={announcement.id}
-                  alignItems="flex-start"
-                  sx={{ px: 0 }}
-                >
-                  <ListItemAvatar>
-                    <Avatar>{announcement.avatar}</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Box
-                        sx={{ display: "flex", gap: 1, alignItems: "center" }}
-                      >
-                        <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="text.primary"
+            {loading ? (
+              <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+                <CircularProgress />
+              </Box>
+            ) : error ? (
+              <Typography color="error" sx={{ p: 2 }}>
+                {error}
+              </Typography>
+            ) : (
+              <List>
+                {announcements.map((announcement) => (
+                  <ListItem
+                    key={announcement._id}
+                    alignItems="flex-start"
+                    sx={{ px: 0 }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar src={announcement.img} alt={announcement.name}>
+                        {announcement.name[0]}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Box
+                          sx={{ display: "flex", gap: 1, alignItems: "center" }}
                         >
-                          {announcement.author}
-                        </Typography>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.secondary"
-                        >
-                          {announcement.department}
-                        </Typography>
-                      </Box>
-                    }
-                    secondary={announcement.content}
-                  />
-                </ListItem>
-              ))}
-            </List>
+                          <Typography
+                            component="span"
+                            variant="subtitle1"
+                            color="text.primary"
+                          >
+                            {announcement.name}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="text.secondary"
+                          >
+                            {announcement.course}
+                          </Typography>
+                        </Box>
+                      }
+                      secondary={
+                        <>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ display: "block" }}
+                          >
+                            {announcement.content}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ mt: 1, display: "block" }}
+                          >
+                            {new Date(
+                              announcement.createdAt
+                            ).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </Typography>
+                        </>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Paper>
         </Grid>
 
