@@ -3,8 +3,6 @@ import {
   Avatar,
   Box,
   IconButton,
-  InputAdornment,
-  TextField,
   Toolbar,
   Typography,
   Menu,
@@ -13,10 +11,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Search as SearchIcon,
-  Logout as LogoutIcon,
-} from "@mui/icons-material";
+import { Logout as LogoutIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -76,29 +71,9 @@ const TopNavbar = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: { xs: 1, md: 3 },
-            ml: { xs: "auto", sm: 0 },
+            gap: { xs: 1, md: 2 },
           }}
         >
-          <TextField
-            size="small"
-            placeholder="Search..."
-            sx={{
-              display: { xs: "none", sm: "block" },
-              width: { sm: 150, md: 200 },
-              "& .MuiOutlinedInput-root": {
-                bgcolor: "background.paper",
-                borderRadius: 2,
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
           <IconButton
             onClick={handleMenu}
             sx={{ p: 0 }}
