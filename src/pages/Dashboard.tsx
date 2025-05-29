@@ -13,12 +13,15 @@ import {
   ListItemText,
   Paper,
   CircularProgress,
+  Stack,
 } from "@mui/material";
 import requireAuth from "../components/requireAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import type { Announcement, Quiz } from "../types";
 import { useNavigate } from "react-router-dom";
+import ExamsTimeImage from "../assets/examstimeimg.png";
+import { Quiz as QuizIcon } from "@mui/icons-material";
 
 const Dashboard = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -108,17 +111,31 @@ const Dashboard = () => {
       <Box sx={{ mb: 3 }}>
         <Card
           sx={{
-            backgroundImage: "linear-gradient(to right, #ffffff, #f5f5f5)",
+            backgroundColor: "#ffffff",
             borderRadius: 2,
             position: "relative",
             overflow: "hidden",
           }}
         >
-          <CardContent sx={{ p: { xs: 2, md: 4 } }}>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} md={8}>
+          <CardContent sx={{ p: 0 }}>
+            <Grid container spacing={0} alignItems="center">
+              <Grid item xs={12} md={8} sx={{ p: { xs: 2, md: 4 } }}>
                 <Typography variant="h4" gutterBottom>
-                  EXAMS TIME
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 900,
+                      letterSpacing: "0.5px",
+                      background: "linear-gradient(to right, #3f849c, #11547a)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      textFillColor: "transparent",
+                      fontSize: { xs: "2rem", md: "2.5rem" },
+                    }}
+                  >
+                    EXAMS TIME
+                  </Box>
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph>
                   Here we are, Are you ready to fight? Don't worry, we prepared
@@ -131,12 +148,52 @@ const Dashboard = () => {
                 >
                   "Nothing happens until something moves" - Albert Einstein
                 </Typography>
-                <Button variant="contained" color="secondary">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{
+                    color: "#ffffff",
+                    fontWeight: 700,
+                    "&:hover": {
+                      color: "#ffffff",
+                    },
+                  }}
+                >
                   View exams tips
                 </Button>
               </Grid>
-              <Grid item xs={12} md={4}>
-                {/* You can add an illustration here */}
+              <Grid
+                item
+                xs={12}
+                md={4}
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  position: "relative",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  height: "100%",
+                  p: 0,
+                  m: 0,
+                  overflow: "visible",
+                }}
+              >
+                <Box
+                  component="img"
+                  src={ExamsTimeImage}
+                  alt="Exams Time"
+                  sx={{
+                    width: "120%",
+                    height: "auto",
+                    objectFit: "contain",
+                    position: "absolute",
+                    right: "-40px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    maxWidth: "none",
+                    m: 0,
+                    p: 0,
+                  }}
+                />
               </Grid>
             </Grid>
           </CardContent>
@@ -153,6 +210,7 @@ const Dashboard = () => {
               <Button
                 color="primary"
                 onClick={() => navigate("/announcements")}
+                sx={{ color: "#65D5D0" }}
               >
                 All
               </Button>
@@ -233,7 +291,11 @@ const Dashboard = () => {
               sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
             >
               <Typography variant="h6">What's due</Typography>
-              <Button color="primary" onClick={() => navigate("/quizzes")}>
+              <Button
+                color="primary"
+                onClick={() => navigate("/quizzes")}
+                sx={{ color: "#65D5D0" }}
+              >
                 All
               </Button>
             </Box>
@@ -257,9 +319,12 @@ const Dashboard = () => {
                       mb: 2,
                     }}
                   >
-                    <Typography variant="subtitle1" color="primary">
-                      {quiz.title}
-                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <QuizIcon sx={{ color: "#65D5D0" }} />
+                      <Typography variant="subtitle1" color="primary">
+                        {quiz.title}
+                      </Typography>
+                    </Stack>
                     <Typography variant="body2" color="text.secondary">
                       Course: {quiz.course}
                     </Typography>

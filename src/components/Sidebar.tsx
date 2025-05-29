@@ -42,10 +42,12 @@ const Sidebar = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        background: "linear-gradient(180deg, #11547A 0%, #65D5D0 100%)",
+        color: "white",
       }}
     >
-      <Box sx={{ p: 2, borderBottom: "1px solid rgba(0,0,0,0.12)" }}>
-        <Typography variant="h6" color="primary" sx={{ fontWeight: 600 }}>
+      <Box sx={{ p: 2, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
           Student Quiz
         </Typography>
       </Box>
@@ -64,12 +66,20 @@ const Sidebar = () => {
               }}
               sx={{
                 backgroundColor:
-                  location.pathname === item.path
-                    ? "rgba(0, 0, 0, 0.04)"
-                    : "transparent",
+                  location.pathname === item.path ? "white" : "transparent",
                 "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.08)",
+                  backgroundColor: "white",
+                  "& .MuiListItemIcon-root": {
+                    color: "primary.main",
+                  },
+                  "& .MuiListItemText-root": {
+                    color: "primary.main",
+                    "& .MuiTypography-root": {
+                      fontWeight: 600,
+                    },
+                  },
                 },
+                transition: "all 0.2s ease-in-out",
               }}
             >
               <ListItemIcon
@@ -77,7 +87,9 @@ const Sidebar = () => {
                   color:
                     location.pathname === item.path
                       ? "primary.main"
-                      : "text.secondary",
+                      : "rgba(255, 255, 255, 0.7)",
+                  minWidth: 40,
+                  transition: "all 0.2s ease-in-out",
                 }}
               >
                 {item.icon}
@@ -88,7 +100,11 @@ const Sidebar = () => {
                   color:
                     location.pathname === item.path
                       ? "primary.main"
-                      : "text.primary",
+                      : "rgba(255, 255, 255, 0.7)",
+                  "& .MuiTypography-root": {
+                    fontWeight: location.pathname === item.path ? 600 : 400,
+                    transition: "all 0.2s ease-in-out",
+                  },
                 }}
               />
             </ListItem>
