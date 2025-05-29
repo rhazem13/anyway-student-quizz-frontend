@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
 
@@ -77,6 +78,7 @@ function App() {
             {isLoggedIn && <Toolbar />}
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </Box>
