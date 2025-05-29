@@ -9,6 +9,7 @@ import {
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
 import TopNavbar from "./components/TopNavbar";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -78,6 +79,7 @@ function AppContent() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
     </Box>
